@@ -1,0 +1,9 @@
+#compiler les contrats
+truffle compile
+
+#migrer les contrats pour déployer
+truffle migrate
+
+#Interragir avec le contrat
+#truffle console
+

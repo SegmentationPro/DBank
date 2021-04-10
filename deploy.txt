@@ -7,3 +7,19 @@ truffle migrate
 #Interragir avec le contrat
 #truffle console
 
+#récupérer le contrat déployé
+# const token = await Token.deployed()
+
+#récupérer les addresses
+# web3.eth.getAccounts()
+
+
+#récupérer la balance d'une addresse
+# web3.eth.getBalance(address)
+# balance = await token.balanceOf(address)
+
+#convertir les wei en eth
+# web3.utils.fromWei(balance)
+
+#convertir les eth en wei
+# web3.utils.toWei(balance)

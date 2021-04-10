@@ -6,19 +6,52 @@ import "./Token.sol";
 contract dBank {
 
   //assign Token contract to variable
+  Token private token;
 
   //add mappings
+  mapping (address => uint) private _etherBalance;
+  mapping (address => uint) private _depositStart;
+  mapping (address => bool) private _isDeposited;
 
   //add events
+  event Deposit(address indexed user, uint etherAmount, uint timeStart);
 
   //pass as constructor argument deployed Token contract
-  constructor() public {
+  constructor(Token _token) public {
+    token = _token;
     //assign token deployed contract to variable
   }
 
+  /**
+     * @dev Returns the is deposited flag of user.
+     */
+  function isDeposited(address account) public view returns (bool) {
+    return _isDeposited[account];
+  }
+
+  /**
+     * @dev Returns the deposit start of user.
+     */
+  function depositStart(address account) public view returns (uint) {
+    return _depositStart[account];
+  }
+
+    /**
+     * @dev Returns the ether balance of user.
+     */
+  function etherBalanceOf(address account) public view returns (uint) {
+    return _etherBalance[account];
+  }
+
   function deposit() payable public {
+    require(_isDeposited[msg.sender] == false, 'Error, deposit already active');
+    require(msg.value >= 10**16, 'Error, deposit must be >= 0.01 ETH');
     //check if msg.sender didn't already deposited funds
     //check if msg.value is >= than 0.01 ETH
+    _etherBalance[msg.sender] = _etherBalance[msg.sender] + msg.value;
+    _depositStart[msg.sender] = _depositStart[msg.sender] + block.timestamp;
+    _isDeposited[msg.sender] = true;
+    emit Deposit(msg.sender, msg.value, block.timestamp);
 
     //increase msg.sender ether deposit balance
     //start msg.sender hodling time
